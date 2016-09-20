@@ -4,14 +4,6 @@
       <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
-    <!-- Angular UI Router-->
-    <script src="js/angular-ui-router.min.js"></script>
-    <!-- <script>
-       var myApp = angular.module('myApp', ['ui.router']);
-       // For Component users, it should look like this:
-       // var myApp = angular.module('myApp', [require('angular-ui-router')]);
-   </script> -->
-
     <!-- Firebase //new version available(3.4.0)-->
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
@@ -36,5 +28,13 @@
 <body>
     <script src="/scripts/app.js"></script>
 
+    <html ng-app="sampleApp">
+  <body ng-controller="SampleCtrl">
+    <!-- anything typed in here is magically saved to our Firebase database! -->
+    <input type="text" ng-model="data.text"/>
+    <!-- all changes from our Firebase database magically appear here! -->
+    <h1>You said: {{ data.text }}</h1>
+  </body>
+</html>
 </body>
 </html>
