@@ -1,9 +1,16 @@
 var app = angular.module("sampleApp", ["firebase"]);
-app.controller("SampleCtrl", function($scope, $firebaseObject) {
-  var ref = firebase.database().ref().child("data");
-  // download the data into a local object
-  var syncObject = $firebaseObject(ref);
-  // synchronize the object with a three-way data binding
+app.controller("SampleCtrl", function($scope, $firebaseArray) {
+  var ref = new Firebase("https://bloc-chat-8c9cf.firebaseio.com/messages");
+  // create a synchronized array
   // click on `index.html` above to see it used in the DOM!
-  syncObject.$bindTo($scope, "data");
+  $scope.messages = $firebaseArray(ref);
+
+  // add new items to the array
+// the message is automatically added to our Firebase database!
+$scope.addMessage = function() {
+  $scope.messages.$add({
+    text: $scope.newMessageText
+  });
+};
+
 });

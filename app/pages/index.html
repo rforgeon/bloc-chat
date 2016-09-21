@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="sampleApp">
 <head lang="en">
       <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
@@ -33,8 +33,47 @@
     <title>Chat</title>
     <link rel="stylesheet" href="/styles/style.css">
 </head>
-<body>
+<body ng-controller="SampleCtrl">
     <script src="/scripts/app.js"></script>
+
+    <div class="grid">
+      <div class="col-1-4 sidbarBackgrnd sideBoarder">
+        <br>
+        <div class="sidebarTitle">
+          Debatabl
+        </div>
+        <img src="https://cldup.com/KCJED6cOZ2.png" class="logo">
+        <br>
+        <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom">
+        <br>
+        <div class="roomButton roomButtonText"ng-repeat="message in messages">
+          {{ rooms.text }}
+        </div>
+
+        <div class="roomButton roomButtonText">
+          Penutbutter Vs. Jelly
+        </div>
+
+      </div>
+      <div class="col-3-4">
+        <ul>
+          <li ng-repeat="message in messages">
+            <!-- edit a message -->
+            <input ng-model="message.text" ng-change="messages.$save(message)" />
+            <!-- delete a message -->
+            <button ng-click="messages.$remove(message)">Delete Message</button>
+          </li>
+        </ul>
+        <!-- push a new message onto the array -->
+        <form ng-submit="addMessage()">
+            <input ng-model="newMessageText" />
+            <button type="submit">Add Message</button>
+        </form>
+
+      </div>
+
+    </div>
+
 
 </body>
 </html>
