@@ -6,11 +6,6 @@
 
     <!-- Angular UI Router-->
     <script src="js/angular-ui-router.min.js"></script>
-    <!-- <script>
-       var myApp = angular.module('myApp', ['ui.router']);
-       // For Component users, it should look like this:
-       // var myApp = angular.module('myApp', [require('angular-ui-router')]);
-   </script> -->
 
     <!-- Firebase //new version available(3.4.0)-->
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
@@ -46,8 +41,8 @@
         <br>
         <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom">
         <br>
-        <div class="roomButton roomButtonText"ng-repeat="message in messages">
-          {{ rooms.text }}
+        <div class="roomButton roomButtonText" ng-repeat="room in rooms">
+          {{ room.name}}
         </div>
 
         <div class="roomButton roomButtonText">
@@ -56,19 +51,7 @@
 
       </div>
       <div class="col-3-4">
-        <ul>
-          <li ng-repeat="message in messages">
-            <!-- edit a message -->
-            <input ng-model="message.text" ng-change="messages.$save(message)" />
-            <!-- delete a message -->
-            <button ng-click="messages.$remove(message)">Delete Message</button>
-          </li>
-        </ul>
-        <!-- push a new message onto the array -->
-        <form ng-submit="addMessage()">
-            <input ng-model="newMessageText" />
-            <button type="submit">Add Message</button>
-        </form>
+
 
       </div>
 
