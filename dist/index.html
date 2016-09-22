@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html ng-app="sampleApp">
-<head lang="en">
+<html ng-app="BlocChat">
+  <head lang="en">
+
+      <!-- <script>
+        // Initialize the Firebase SDK
+        var config = {
+          apiKey: 'AIzaSyBHbwgKHE4r-Z8zE4x3mLAyATEQiROG_7A',
+          authDomain: 'bloc-chat-8c9cf.firebaseapp.com',
+          databaseURL: 'https://bloc-chat-8c9cf.firebaseio.com',
+          storageBucket: 'bloc-chat-8c9cf.appspot.com',
+        };
+        firebase.initializeApp(config);
+      </script> -->
+
+      <meta charset="UTF-8">
+      <title>Chat</title>
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/styles/style.css">
+  </head>
+  <body ng-controller="RoomsCtrl">
+      <ui-view></ui-view>
+
       <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-
-    <!-- Angular UI Router-->
-    <script src="js/angular-ui-router.min.js"></script>
 
     <!-- Firebase //new version available(3.4.0)-->
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
@@ -13,50 +30,15 @@
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
 
-    <script>
-      // Initialize the Firebase SDK
-      var config = {
-        apiKey: 'AIzaSyBHbwgKHE4r-Z8zE4x3mLAyATEQiROG_7A',
-        authDomain: 'bloc-chat-8c9cf.firebaseapp.com',
-        databaseURL: 'https://bloc-chat-8c9cf.firebaseio.com',
-        storageBucket: 'bloc-chat-8c9cf.appspot.com',
-      };
-      firebase.initializeApp(config);
-    </script>
+    <!-- Angular UI Router-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
 
-    <meta charset="UTF-8">
-    <title>Chat</title>
-    <link rel="stylesheet" href="/styles/style.css">
-</head>
-<body ng-controller="SampleCtrl">
     <script src="/scripts/app.js"></script>
-
-    <div class="grid">
-      <div class="col-1-4 sidbarBackgrnd sideBoarder">
-        <br>
-        <div class="sidebarTitle">
-          Debatabl
-        </div>
-        <img src="https://cldup.com/KCJED6cOZ2.png" class="logo">
-        <br>
-        <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom">
-        <br>
-        <div class="roomButton roomButtonText" ng-repeat="room in rooms">
-          {{ room.name}}
-        </div>
-
-        <div class="roomButton roomButtonText">
-          Penutbutter Vs. Jelly
-        </div>
-
-      </div>
-      <div class="col-3-4">
+    <script src="/scripts/controllers.js"></script>
+    <script src="/scripts/factories.js"></script>
+      <!-- Bootstrap -->
+      <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
 
 
-      </div>
-
-    </div>
-
-
-</body>
+  </body>
 </html>
