@@ -4,12 +4,12 @@
     <div class="sidebarTitle">
       Debatable
     </div>
-    <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo">
+    <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo" ng-click="Rooms.setCurrentRoom(null)">
     <br>
     <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom" >
     <br>
     <div class="roomButton roomButtonText" ng-repeat="room in Rooms.roomArray" >
-      {{ room.name }}
+      <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.name }}
     </div>
 
     <div class="roomButton roomButtonText">
@@ -18,7 +18,10 @@
 
   </div>
   <div class="col-3-4">
-    <h3 class="main-view-title"> Home.html</h3>
+    <h3 class="main-view-title"> {{Rooms.currentRoom.name}}</h3>
+    <div class="msgBoxBlue msgText" ng-repeat="message in Rooms.currentRoom.messagesArray">
+      <p>{{message.content}}</p>
+    </div>
 
   </div>
 
