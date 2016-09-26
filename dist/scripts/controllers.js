@@ -1,65 +1,133 @@
 
+//Global Variables
+var roomId = 1;
 
 (function() {
     function RoomsCtrl() {
       this.roomArray = [
-        {"name": 'Room 1',
-          "messagesArray": [
-              {
-                "userName": "Ralph",
-                "content": "How's everybody doing in Room 1?",
-                "createdAt": new Date()
-              }
-            ]},
-        {"name": 'Room 2',
-        "messagesArray": [
-            {
-              "userName": "Toby Castro",
-              "content": "How's everybody doing in Room 2?",
-              "createdAt": new Date()
-            },
-            {
-              "userName": "Bruce Wayne",
-              "content": "Not too shabby",
-              "createdAt": new Date()
-            },
-            {
-              "userName": "Toby Castro",
-              "content": "How are things?",
-              "createdAt": new Date()
-            }
-          ]}
-        ];
-
+        {"nameA": 'Hillary',
+          "nameB": 'Trump',
+          "roomId": 0
+        },
+        {"nameA": 'Arsenal',
+        "nameB": 'Chelsea',
+        "roomId": 1
+        }
+      ];
 
       this.messagesArray = [
         {
-          userName: "Toby Castro",
-          content: "How's everybody doing in Room 2?",
-          createdAt: new Date()
+          "userName": "Ralph",
+          "inFavorOf": "",
+          "content": "How's everybody doing in Room 1?",
+          "createdAt": new Date(),
+          "roomId": 0
         },
         {
-          userName: "Bruce Wayne",
-          content: "Not too shabby",
-          createdAt: new Date()
-        },
-        {
-          userName: "Toby Castro",
-          content: "How are things?",
-          createdAt: new Date()
+          "userName": "Ralph",
+          "inFavorOf": "",
+          "content": "Anyone here?",
+          "createdAt": new Date(),
+          "roomId": 1
         }
-        ];
+      ];
 
+        //Set the current Chat Room
         this.currentRoom = null;
 
         function setCurrentRoom(roomName){
           this.currentRoom = roomName;
+          this.isCreating = false;
         }
 
         this.setCurrentRoom = setCurrentRoom;
+        ////
+
+        //Creating Room
+        this.isCreating = false;
+
+        function startCreating(){
+          this.isCreating = true;
+          this.currentRoom = null;
+          resetCreateRoomForm();
+          resetCreateMsgForm();
+          console.log("Enter starCreating()");
+        }
+        function cancelCreating(){
+          console.log("Enter cancelCreating()");
+          this.isCreating = false;
+        }
+
+        function shouldShowCreating(){
+          return this.isCreating;
+        }
+
+        this.startCreating = startCreating;
+        this.cancelCreating = cancelCreating;
+        this.shouldShowCreating = shouldShowCreating;
+        ///
+
+        //CRUD
+        function setRoomMsgs(room){
+          var thisRoomsMsgs = [];
+          for (var i in this.messagesArray){
+            if (this.messagesArray[i].roomId === room.roomId){
+              thisRoomsMsgs.push(this.messagesArray[i]);
+            }
+          }
+          return thisRoomsMsgs;
+        }
+
+        function resetCreateRoomForm(){
+          this.newRoom =
+            {"nameA": '',
+              "nameB": '',
+              "messagesArray": []
+            };
+          }
+
+          function resetCreateMsgForm(){
+            this.newMsg =
+              {"userName": "",
+              "inFavorOf": "",
+              "content": "",
+              "createdAt": new Date(),
+              "roomId": 0
+              };
+            }
+
+        function createRoom(newRoom){
+          console.log("Enter createRoom: roomA: "+this.roomArray.roomA+" roomB: "+this.roomArray.roomB);
+
+          newRoom.messagesArray = [{
+                content: "Your new room has been created. 🙌",
+                createdAt: new Date()
+              }];
+          roomId++;
+          newRoom.roomId = roomId;
+
+          this.roomArray.push(newRoom);
+
+          resetCreateRoomForm();
+        }
+
+        function createMsg(newMsg){
+
+            newMsg.userName = "Ralph";
+            newMsg.createdAt = new Date();
+            newMsg.roomId = this.currentRoom.roomId;
+
+            this.messagesArray.push(newMsg);
+
+          setRoomMsgs(this.currentRoom);
+          resetCreateMsgForm();
+        }
+
+        this.createMsg = createMsg;
+        this.createRoom = createRoom;
+        this.setRoomMsgs = setRoomMsgs;
 
       }
-
 
     angular
         .module('BlocChat')

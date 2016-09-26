@@ -11,6 +11,11 @@
   width: 25%;
   text-align: center;
 }
+.col-1-2 {
+  width: 25%;
+  text-align: center;
+}
+
 .grid:after {
   content: "";
   display: table;
@@ -27,47 +32,39 @@
 .sidbarBackgrnd{
   height:100vh;
   position: relative;
-  opacity: 0.75;
+  opacity: 0.85;
   background-image: linear-gradient(-154deg, #DBE5FF 0%, #D5D4E3 15%, #FF731D 100%);
   border: 1px solid #979797;
 }
 .logo{
   width: 20vw;
+  opacity: 1;
 }
 .logo:hover{
   width: 20vw;
   cursor: pointer;
+  opacity: 1;
 }
 
 .addRoom{
   width: 8vw;
   margin-bottom: 10px;
+  opacity: 1;
 }
 .addRoom:hover{
   width: 8vw;
   margin-bottom: 10px;
   cursor: pointer;
+  opacity: 1;
 }
 
 .sideBoarder{
   border-right: 5px solid #3D6889;
 }
-
-.newRoomButton{
-  text-align: center;
-  vertical-align: middle;
-  line-height: 3em;
-  font-size: 2em;
-  background-color: lightgrey;
-  width: 4em;
-  height: 4em;
-  margin: 0 auto;
-  padding: 10px;
-  position: relative;
-  opacity: 0.87;
-  box-shadow: 0px 5px 4px 0px rgba(0,0,0,0.50);
+.bottomBoarder{
+  border-bottom: 5px solid #3D6889;
+  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
 }
-
 
 .roomButton{
   margin-left: 3px;
@@ -76,24 +73,44 @@
   background-color: white;
   opacity: 0.80;
   box-shadow: 0px 5px 4px 0px rgba(0,0,0,0.50);
+  opacity: 1;
+  border-radius: 1.5px;
 }
 .roomButtonText{
   font-family: AvenirNext-Regular;
   font-size: 2.5vw;
   color: #565656;
   letter-spacing: -0.66px;
+  opacity: 1;
 }
 
 .sidebarTitle{
   font-family: Helvetica-Light;
-  font-size: 5.2vw;
+  font-size: 5vw;
   color: #73D0F4;
+  opacity: 1;
 }
 
 .msgBoxBlue{
   opacity: 0.16;
   background: #E3ECFF;
-  border: 1px solid #979797;
+  border: 1px solid lightgrey;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
+}
+
+.msgBoxOrange{
+  opacity: 0.16;
+  background: #FAA26D;
+  border: 1px solid lightgrey;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
 }
 
 .msgTime{
@@ -111,14 +128,12 @@
 }
 .msgText{
   font-family: AvenirNext-Regular;
-  font-size: 24px;
-  color: #565656;
+  font-size: 15px;
+  color: grey;
   letter-spacing: -0.66px;
-}
-.msgBoxOrange{
-  opacity: 0.16;
-  background: #FAA26D;
-  border: 1px solid #979797;
+  opacity: 1;
+  padding-top: 10px;
+  padding-left: 10px;
 }
 
 .txtBoxRectangle{
@@ -126,6 +141,10 @@
   border: 1px solid #979797;
   box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.50);
   border-radius: 8px;
+  width: 67vw;
+  position:absolute;
+  bottom:0;
+  padding-left: 5vw;
 }
 .writeMsgHere{
   font-family: AvenirNext-UltraLight;
@@ -138,20 +157,18 @@
   font-size: 24px;
   color: #565656;
   letter-spacing: -0.66px;
+  position: absolute;
 }
 
 .rightHeaderRectangle{
-  opacity: 0.16;
+  opacity: 0.50;
   background: #E3ECFF;
   border: 1px solid #979797;
 }
 .leftHeaderRectangle{
-  opacity: 0.16;
+  opacity: 0.20;
   background: #FAA26D;
   border: 1px solid #979797;
-}
-.headerBottomLine{
-  border: 5px solid #3D6889;
 }
 .slash{
   font-family: AvenirNext-UltraLight;

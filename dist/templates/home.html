@@ -1,3 +1,7 @@
+
+
+
+
 <div class="grid">
   <div class="col-1-4 sidbarBackgrnd sideBoarder">
     <br>
@@ -6,10 +10,10 @@
     </div>
     <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo" ng-click="Rooms.setCurrentRoom(null)">
     <br>
-    <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom" >
+    <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom" ng-click="Rooms.startCreating()">
     <br>
     <div class="roomButton roomButtonText" ng-repeat="room in Rooms.roomArray" >
-      <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.name }}
+      <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.nameA }} Vs. {{ room.nameB }}</a>
     </div>
 
     <div class="roomButton roomButtonText">
@@ -18,11 +22,43 @@
 
   </div>
   <div class="col-3-4">
-    <h3 class="main-view-title"> {{Rooms.currentRoom.name}}</h3>
-    <div class="msgBoxBlue msgText" ng-repeat="message in Rooms.currentRoom.messagesArray">
-      <p>{{message.content}}</p>
-    </div>
+    <!-- Create room -->
+    <div ng-if="Rooms.shouldShowCreating()">
+      <h3>Create Room!</h3>
+      <form class="modal-body" role="form" ng-show="Rooms.isCreating" ng-submit="Rooms.createRoom(newRoom)">
+        <div class="form-group">
+        <label>Enter a room name</label>
+          <input type="text" class="form-control" placeholder="Room name" ng-model="newRoom.nameA">
+          <input type="text" class="form-control" placeholder="Room name" ng-model="newRoom.nameB">
+        </div>
+        <div class="modal-footer">
+          <button ng-click="Rooms.cancelCreating()" class="btn btn-default" >Cancel</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+        </form>
+      </div>
 
+    <!-- Display Room -->
+      <div ng-if="Rooms.currentRoom!=null">
+        <div class=bottomBoarder>
+          <h3 class="main-view-title leftHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameA}}</span> </h3>
+            <h3 class="slash">
+              /
+            </h3>
+          <h3 class="main-view-title rightHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameB}} </span></h3>
+        </div>
+        <br>
+        <div class="msgBoxBlue msgText" ng-repeat="message in Rooms.setRoomMsgs(Rooms.currentRoom)">
+          <p>{{message.content}}</p>
+        </div>
+        <!-- Send Message -->
+        <form class="txtBoxRectangle" role="form" ng-submit="Rooms.createMsg(newMsg)">
+          <div class="form-group">
+              <input type="text" class="form-control" placeholder="write message here..." ng-model="newMsg.content">
+              <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </form>
+    </div>
   </div>
 
 </div>
