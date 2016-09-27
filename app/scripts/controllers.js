@@ -3,36 +3,42 @@
 var roomId = 2;
 
 (function() {
-    function RoomsCtrl() {
-      this.roomArray = [
-        { "emoji": '🇺🇸',
-          "nameA": 'Hillary',
-          "nameB": 'Trump',
-          "roomId": 0
-        },
-        { "emoji": '⚽️',
-          "nameA": 'Arsenal',
-          "nameB": 'Chelsea',
-          "roomId": 1
-        }
-      ];
+    function RoomsCtrl($firebaseArray) {
+      var ref = firebase.database().ref();
+      var fireRooms = $firebaseArray(ref.child("rooms"));
+      var fireMsgs = $firebaseArray(ref.child("msgs"));
 
-      this.messagesArray = [
-        {
-          "userName": "Ralph",
-          "inFavorOf": "",
-          "content": "How's everybody doing in Room 1?",
-          "createdAt": new Date(),
-          "roomId": 0
-        },
-        {
-          "userName": "Ralph",
-          "inFavorOf": "",
-          "content": "Anyone here?",
-          "createdAt": new Date(),
-          "roomId": 1
-        }
-      ];
+      this.roomArray = fireRooms;
+      // [
+      //   { "emoji": '🇺🇸',
+      //     "nameA": 'Hillary',
+      //     "nameB": 'Trump',
+      //     "roomId": 0
+      //   },
+      //   { "emoji": '⚽️',
+      //     "nameA": 'Arsenal',
+      //     "nameB": 'Chelsea',
+      //     "roomId": 1
+      //   }
+      // ];
+
+      this.messagesArray = fireMsgs;
+      // [
+      //   {
+      //     "userName": "Ralph",
+      //     "inFavorOf": "",
+      //     "content": "How's everybody doing in Room 1?",
+      //     "createdAt": new Date(),
+      //     "roomId": 0
+      //   },
+      //   {
+      //     "userName": "Ralph",
+      //     "inFavorOf": "",
+      //     "content": "Anyone here?",
+      //     "createdAt": new Date(),
+      //     "roomId": 1
+      //   }
+      // ];
 
         //Set the current Chat Room
         this.currentRoom = null;
@@ -102,15 +108,15 @@ var roomId = 2;
         function createRoom(newRoom){
           console.log("Enter createRoom: roomA: "+this.roomArray.roomA+" roomB: "+this.roomArray.roomB);
 
-          this.messagesArray = [{
-                content: "Room Created 🙌",
-                createdAt: new Date(),
-                roomId: roomId
-              }];
+          // this.messagesArray = [{
+          //       content: "Room Created 🙌",
+          //       createdAt: new Date(),
+          //       roomId: roomId
+          //     }];
 
           newRoom.roomId = roomId;
 
-          this.roomArray.push(newRoom);
+          this.roomArray.$add(newRoom);
 
           resetCreateRoomForm();
           roomId++;
@@ -122,7 +128,7 @@ var roomId = 2;
             newMsg.createdAt = new Date();
             newMsg.roomId = this.currentRoom.roomId;
 
-            this.messagesArray.push(newMsg);
+            this.messagesArray.$add(newMsg);
 
           setRoomMsgs(this.currentRoom);
           resetCreateMsgForm();
@@ -136,5 +142,5 @@ var roomId = 2;
 
     angular
         .module('BlocChat')
-        .controller('RoomsCtrl', [ RoomsCtrl]);
+        .controller('RoomsCtrl', ["$firebaseArray",RoomsCtrl]);
 })();
