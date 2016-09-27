@@ -1,17 +1,19 @@
 
 //Global Variables
-var roomId = 1;
+var roomId = 2;
 
 (function() {
     function RoomsCtrl() {
       this.roomArray = [
-        {"nameA": 'Hillary',
+        { "emoji": '🇺🇸',
+          "nameA": 'Hillary',
           "nameB": 'Trump',
           "roomId": 0
         },
-        {"nameA": 'Arsenal',
-        "nameB": 'Chelsea',
-        "roomId": 1
+        { "emoji": '⚽️',
+          "nameA": 'Arsenal',
+          "nameB": 'Chelsea',
+          "roomId": 1
         }
       ];
 
@@ -80,7 +82,8 @@ var roomId = 1;
 
         function resetCreateRoomForm(){
           this.newRoom =
-            {"nameA": '',
+            { "emoji": '💬',
+              "nameA": '',
               "nameB": '',
               "messagesArray": []
             };
@@ -99,16 +102,18 @@ var roomId = 1;
         function createRoom(newRoom){
           console.log("Enter createRoom: roomA: "+this.roomArray.roomA+" roomB: "+this.roomArray.roomB);
 
-          newRoom.messagesArray = [{
-                content: "Your new room has been created. 🙌",
-                createdAt: new Date()
+          this.messagesArray = [{
+                content: "Room Created 🙌",
+                createdAt: new Date(),
+                roomId: roomId
               }];
-          roomId++;
+
           newRoom.roomId = roomId;
 
           this.roomArray.push(newRoom);
 
           resetCreateRoomForm();
+          roomId++;
         }
 
         function createMsg(newMsg){
