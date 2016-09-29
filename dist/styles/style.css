@@ -58,12 +58,60 @@
   opacity: 1;
 }
 
+.roomNameContainer{
+  overflow: auto;
+  height: 45vh;
+}
+
 .sideBoarder{
   border-right: 5px solid #3D6889;
 }
-.bottomBoarder{
+.header{
   border-bottom: 5px solid #3D6889;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
+}
+.headerTitle{
+  display: flex;
+}
+
+.rightHeaderRectangle{
+  opacity: 0.50;
+  background: #E3ECFF;
+  border: 1px solid #979797;
+  width: 37.5vw;
+  text-align: center;
+}
+.rightHeaderRectangle:hover{
+  cursor: pointer;
+}
+.leftHeaderRectangle{
+  opacity: 0.50;
+  background: #FAA26D;
+  border: 1px solid #979797;
+  width: 37.5vw;
+  text-align: center;
+}
+.leftHeaderRectangle:hover{
+  cursor: pointer;
+}
+.slash{
+  font-family: AvenirNext-UltraLight;
+  font-size: 106px;
+  color: #3D6889;
+  letter-spacing: -2.88px;
+}
+.leftHeaderText{
+  font-family: AvenirNext-UltraLight;
+  font-size: 7vw;
+  color: white;
+  letter-spacing: -1.34px;
+}
+.rightHeaderText{
+  font-family: AvenirNext-UltraLight;
+  font-size: 7vw;
+  /*color: #73D0F4;*/
+  color: #3D6889;
+  letter-spacing: -1.34px;
 }
 
 .roomButton{
@@ -87,12 +135,45 @@
 .sidebarTitle{
   font-family: Helvetica-Light;
   font-size: 5vw;
-  color: #73D0F4;
+  color: #3D6889;
   opacity: 1;
 }
 
+.messageStage{
+  height: 67vh;
+  overflow: auto;
+}
+.selectOverlay{
+  height: 50vh;
+  width: 30vw;
+  opacity: .5;
+  background-color: black;
+  position: absolute;
+  z-index: 2;
+  margin-left: 22%;
+  margin-top:20px;
+  box-shadow: 0px 5px 4px 0px rgba(0,0,0,0.50);
+  border-radius: 3px;
+}
+.selectOverlayHand{
+  font-size: 6.5vw;
+  text-align: center;
+  opacity: 1;
+  z-index: 3;
+}
+.selectOverlayText{
+  font-size: 6.5vw;
+  text-align: center;
+  opacity: 1;
+  z-index: 3;
+}
+.selectOverlayBtn{
+  width: 100%;
+  margin-top: 30px;
+}
+
 .msgBoxBlue{
-  opacity: 0.16;
+  opacity: 1;
   background: #E3ECFF;
   border: 1px solid lightgrey;
   margin-left: 10px;
@@ -100,6 +181,8 @@
   margin-bottom: 5px;
   border-radius: 2px;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
+  display: flex;
+  padding: none;
 }
 
 .msgBoxOrange{
@@ -111,20 +194,32 @@
   margin-bottom: 5px;
   border-radius: 2px;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
+  display: flex;
 }
 
 .msgTime{
   font-family: AvenirNext-UltraLightItalic;
-  font-size: 17px;
+  font-size: 10px;
   color: #565656;
   letter-spacing: -0.47px;
+  padding-right: 15px;
+  padding-top: 2px;
+  width: 8.5vw;
+  margin: none;
+  text-align: right;
+}
+.msgNameAndText{
+  flex: 1;
+  margin: none;
 }
 
 .msgUsername{
   font-family: AvenirNext-UltraLight;
-  font-size: 24px;
+  font-size: 12px;
   color: #565656;
   letter-spacing: -0.66px;
+  padding-left: 5px;
+  margin: none;
 }
 .msgText{
   font-family: AvenirNext-Regular;
@@ -132,7 +227,6 @@
   color: grey;
   letter-spacing: -0.66px;
   opacity: 1;
-  padding-top: 10px;
   padding-left: 10px;
 }
 
@@ -140,12 +234,11 @@
   background: rgba(215,215,215,0.28);
   border: 1px solid #979797;
   box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.50);
-  border-radius: 8px;
-  width: 67vw;
-  position:absolute;
-  bottom:0;
-  padding-left: 5vw;
+  border-radius: 3px;
+  width: 58vw;
+  height: 4vh;
 }
+
 .writeMsgHere{
   font-family: AvenirNext-UltraLight;
   font-size: 24px;
@@ -157,37 +250,12 @@
   font-size: 24px;
   color: #565656;
   letter-spacing: -0.66px;
-  position: absolute;
+  float: right;
+  background: transparent;
+  border: none;
 }
 
-.rightHeaderRectangle{
-  opacity: 0.50;
-  background: #E3ECFF;
-  border: 1px solid #979797;
-}
-.leftHeaderRectangle{
-  opacity: 0.20;
-  background: #FAA26D;
-  border: 1px solid #979797;
-}
-.slash{
-  font-family: AvenirNext-UltraLight;
-  font-size: 106px;
-  color: #3D6889;
-  letter-spacing: -2.88px;
-}
-.leftHeaderText{
-  font-family: AvenirNext-UltraLight;
-  font-size: 49px;
-  color: #FAA26E;
-  letter-spacing: -1.34px;
-}
-.rightHeaderText{
-  font-family: AvenirNext-UltraLight;
-  font-size: 49px;
-  color: #73D0F4;
-  letter-spacing: -1.34px;
-}
+
 
 /*MEDIA QUERY*/
 @media only screen and (max-width : 640px) {

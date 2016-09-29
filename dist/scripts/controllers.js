@@ -6,6 +6,7 @@ var roomId = 2;
     function RoomsCtrl($firebaseArray) {
       var ref = firebase.database().ref();
       var fireRooms = $firebaseArray(ref.child("rooms"));
+      var fireInFavor = $firebaseArray(ref.child("inFavorOf"));
       var fireMsgs = $firebaseArray(ref.child("msgs"));
 
       this.roomArray = fireRooms;
@@ -13,7 +14,7 @@ var roomId = 2;
       //   { "emoji": '🇺🇸',
       //     "nameA": 'Hillary',
       //     "nameB": 'Trump',
-      //     "roomId": 0
+      //     "roomId": 0,
       //   },
       //   { "emoji": '⚽️',
       //     "nameA": 'Arsenal',
@@ -26,7 +27,6 @@ var roomId = 2;
       // [
       //   {
       //     "userName": "Ralph",
-      //     "inFavorOf": "",
       //     "content": "How's everybody doing in Room 1?",
       //     "createdAt": new Date(),
       //     "roomId": 0
@@ -39,13 +39,19 @@ var roomId = 2;
       //     "roomId": 1
       //   }
       // ];
+        function testUserService(){
+          console.log('UserService.displayName: '+UserService.displayName);
+        }
+
 
         //Set the current Chat Room
         this.currentRoom = null;
+        this.popupOpen = true;
 
         function setCurrentRoom(roomName){
           this.currentRoom = roomName;
           this.isCreating = false;
+          this.popupOpen = true;
         }
 
         this.setCurrentRoom = setCurrentRoom;
@@ -55,14 +61,18 @@ var roomId = 2;
         this.isCreating = false;
 
         function startCreating(){
-          this.isCreating = true;
-          this.currentRoom = null;
-          resetCreateRoomForm();
-          resetCreateMsgForm();
-          console.log("Enter starCreating()");
+          if(userSignedIn()){
+            this.isCreating = true;
+            this.currentRoom = null;
+            resetCreateRoomForm();
+            resetCreateMsgForm();
+          }
+          else{
+            alert("You must sign in to create a room.");
+          }
         }
+
         function cancelCreating(){
-          console.log("Enter cancelCreating()");
           this.isCreating = false;
         }
 
@@ -86,57 +96,124 @@ var roomId = 2;
           return thisRoomsMsgs;
         }
 
-        function resetCreateRoomForm(){
-          this.newRoom =
-            { "emoji": '💬',
-              "nameA": '',
-              "nameB": '',
-              "messagesArray": []
-            };
-          }
-
-          function resetCreateMsgForm(){
-            this.newMsg =
-              {"userName": "",
-              "inFavorOf": "",
-              "content": "",
-              "createdAt": new Date(),
-              "roomId": 0
-              };
-            }
-
         function createRoom(newRoom){
-          console.log("Enter createRoom: roomA: "+this.roomArray.roomA+" roomB: "+this.roomArray.roomB);
-
-          // this.messagesArray = [{
+          // this.messagesArray.$add({
           //       content: "Room Created 🙌",
           //       createdAt: new Date(),
           //       roomId: roomId
-          //     }];
+          //     });
 
           newRoom.roomId = roomId;
 
           this.roomArray.$add(newRoom);
 
-          resetCreateRoomForm();
+          this.setCurrentRoom(newRoom);
+
           roomId++;
         }
 
         function createMsg(newMsg){
+          if (userSignedIn()){
+            var user = firebase.auth().currentUser;
+            var date = new Date();
+            date = date.toLocaleTimeString();
 
-            newMsg.userName = "Ralph";
-            newMsg.createdAt = new Date();
+            newMsg.userName = user.displayName.toLowerCase();
+            newMsg.createdAt = date;
             newMsg.roomId = this.currentRoom.roomId;
+
+            console.log(newMsg.createdAt);
 
             this.messagesArray.$add(newMsg);
 
-          setRoomMsgs(this.currentRoom);
-          resetCreateMsgForm();
+            setRoomMsgs(this.currentRoom);
+
+            resetCreateMsgForm();
+          }else{
+            alert("You must sign in to contribute to a room.");
+          }
         }
 
+        function removeOldInFavor(roomID,targetUser){
+          //check if user has a preference for the current room. If they do, remove it.
+          if(this.inFavorOfArray !==undefined || this.inFavorOfArray !==null){
+            for (var i in this.inFavorOfArray){
+              if (this.inFavorOfArray[i].inFavorUser === targetUser && this.inFavorOfArray[i].roomId === roomID){
+                this.$remove(this.inFavorOfArray[i]);
+              }
+            }
+          }else{
+              console.log("removeOld skipped");
+              return;
+            }
+        }
+
+        function setInFavor(choice){
+          console.log(choice);
+          var thisUser = firebase.auth().currentUser;
+          var currentRoomID = this.currentRoom.roomId;
+          console.log(thisUser);
+          console.log(currentRoomID);
+
+          removeOldInFavor(currentRoomID,thisUser);
+          console.log("removeOld ran");
+          newInFavor.inFavorUser = thisUser;
+          newInFavor.roomId = currentRoomID;
+          newInFavor.inFavorOf = choice;
+
+          this.inFavorOfArray.$add(newInFavor);
+        }
+
+        function hasInFavor(){
+          console.log("hasInFavor ran");
+          var user = firebase.auth().currentUser;
+          for (var i in this.inFavorOfNameA){
+            if (i === user){
+              return this.nameA;
+            }
+          }
+          for (var j in this.inFavorOfNameB){
+            if (j === user){
+              return this.nameB;
+            }
+          }
+          return false;
+        }
+
+        function logout(){
+          firebase.auth().signOut().then(function() {
+              this.showLogin();// Sign-out successful.
+              }, function(error) {
+                // An error happened.
+          });
+        }
+
+        function showLogin(){
+          console.log("login ran");
+            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            // The start method will wait until the DOM is loaded.
+            ui.start("#firebaseui-auth-container",uiConfig);
+        }
+
+        function userSignedIn(){
+            if (firebase.auth().currentUser !== null ) {
+                return true;  // User is signed in.
+              } else {
+                return false; // No user is signed in.
+            }
+        }
+
+        this.hasInFavor = hasInFavor;
+        this.setInFavor = setInFavor;
+        this.removeOldInFavor = removeOldInFavor;
+        this.userSignedIn = userSignedIn;
         this.createMsg = createMsg;
         this.createRoom = createRoom;
         this.setRoomMsgs = setRoomMsgs;
+        this.logout = logout;
+        this.showLogin = showLogin;
+
+        this.testUserService = testUserService;
 
       }
 

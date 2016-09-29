@@ -1,27 +1,31 @@
 
-
-
-
 <div class="grid">
   <div class="col-1-4 sidbarBackgrnd sideBoarder">
     <br>
     <div class="sidebarTitle">
       Debatable
     </div>
+    <div ng-init="Rooms.testUserService()"></div>
     <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo" ng-click="Rooms.setCurrentRoom(null)">
+    <br>
+    <div ng-init="Rooms.showLogin()"></div>
+    <div id="firebaseui-auth-container"></div>
+    <button ng-click="Rooms.logout()" class="btn btn-default" >Sign Out</button>
+    <br>
     <br>
     <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom" ng-click="Rooms.startCreating()">
     <br>
-    <div class="roomButton roomButtonText" ng-repeat="room in Rooms.roomArray" >
-      <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.emoji }} {{ room.nameA }} Vs. {{ room.nameB }}</a>
+    <div class="roomNameContainer">
+      <div class="roomButton roomButtonText" ng-repeat="room in Rooms.roomArray" >
+        <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.emoji }} {{ room.nameA }} <span style="color:black;">Vs.</span> {{ room.nameB }}</a>
+      </div>
     </div>
-
   </div>
   <div class="col-3-4">
     <!-- Create room -->
     <div ng-if="Rooms.shouldShowCreating()">
       <h3>Create Room!</h3>
-      <form class="modal-body" role="form" ng-show="Rooms.isCreating" ng-submit="Rooms.createRoom(newRoom)">
+      <form class="modal-body" role="form" ng-show="Rooms.isCreating" ng-submit="Rooms.createRoom(newRoom)" >
         <div class="form-group">
         <label>Enter a room emoji</label>
           <input type="text" class="form-control" placeholder="Room Emoji" ng-model="newRoom.emoji">
@@ -30,32 +34,57 @@
           <input type="text" class="form-control" placeholder="One side in favor of..." ng-model="newRoom.nameB">
         </div>
         <div class="modal-footer">
-          <button ng-click="Rooms.cancelCreating()" class="btn btn-default" >Cancel</button>
           <button type="submit" class="btn btn-primary">Create</button>
+          <button ng-click="Rooms.cancelCreating()" class="btn btn-default" >Cancel</button>
+
         </div>
         </form>
       </div>
 
     <!-- Display Room -->
       <div ng-if="Rooms.currentRoom!=null">
-        <div class=bottomBoarder>
-          <h3 class="main-view-title leftHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameA}}</span> </h3>
-            <h3 class="slash">
-              /
-            </h3>
-          <h3 class="main-view-title rightHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameB}} </span></h3>
+        <div class="header">
+          <div class="headerTitle">
+            <div class="leftHeaderRectangle" ng-click="Rooms.setInFavor('A')">
+              <h3 class="leftHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameA}}</span> </h3>
+            </div>
+
+            <div class="rightHeaderRectangle" ng-click="Rooms.setInFavorB(newInFavor)">
+              <h3 class="rightHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameB}} </span></h3>
+            </div>
+          </div>
         </div>
         <br>
-        <div class="msgBoxBlue msgText" ng-repeat="message in Rooms.setRoomMsgs(Rooms.currentRoom)">
-          <p>{{message.content}}</p>
+        <!-- Popup -->
+        <!-- <div ng-if="Rooms.hasInFavor()===false && Rooms.popupOpen" class=selectOverlay>
+          <div class="selectOverlayHand">
+            👆
+          </div>
+          <div class="selectOverlayText">
+            Select your side.
+          </div>
+          <button class="selectOverlayBtn btn btn-default" ng-click="Rooms.popupOpen=false;"  >Just looking 👀</button>
+        </div> -->
+        <div class=messageStage>
+          <div class="msgBoxBlue" ng-repeat="message in Rooms.setRoomMsgs(Rooms.currentRoom)">
+            <div class=msgNameAndText>
+              <p class="msgUsername">{{message.userName}}</p>
+              <p class="msgText">{{message.content}}</p>
+            </div>
+            <div class=msgTime>
+              <p>{{message.createdAt}}</p>
+            </div>
+          </div>
         </div>
         <!-- Send Message -->
-        <form class="txtBoxRectangle" role="form" ng-submit="Rooms.createMsg(newMsg)">
-          <div class="form-group">
-              <input type="text" class="form-control" placeholder="write message here..." ng-model="newMsg.content">
-              <button type="submit" class="btn btn-primary">Send</button>
-          </div>
-        </form>
+        <div>
+          <form class="send-form" role="form" onsubmit="this.reset()" ng-submit="Rooms.createMsg(newMsg)" style="position:absolute; bottom:0; padding-left:10px;">
+                <button type="submit" class="sendButton">Send</button>
+            <div style="overflow: hidden;">
+                <input class="txtBoxRectangle" type="text" class="form-control" placeholder="Write message here..." ng-model="newMsg.content">
+            </div>
+          </form>
+        </div>
     </div>
   </div>
 
