@@ -3,7 +3,8 @@
 var roomId = 2;
 
 (function() {
-    function RoomsCtrl($firebaseArray) {
+    function RoomsCtrl($firebaseArray,UserService) {
+
       var ref = firebase.database().ref();
       var fireRooms = $firebaseArray(ref.child("rooms"));
       var fireInFavor = $firebaseArray(ref.child("inFavorOf"));
@@ -39,9 +40,13 @@ var roomId = 2;
       //     "roomId": 1
       //   }
       // ];
+
+
         function testUserService(){
-          console.log('UserService.displayName: '+UserService.displayName);
+        
         }
+
+
 
 
         //Set the current Chat Room
@@ -64,8 +69,6 @@ var roomId = 2;
           if(userSignedIn()){
             this.isCreating = true;
             this.currentRoom = null;
-            resetCreateRoomForm();
-            resetCreateMsgForm();
           }
           else{
             alert("You must sign in to create a room.");
@@ -219,5 +222,5 @@ var roomId = 2;
 
     angular
         .module('BlocChat')
-        .controller('RoomsCtrl', ["$firebaseArray",RoomsCtrl]);
+        .controller('RoomsCtrl', ["$firebaseArray","UserService",RoomsCtrl]);
 })();
