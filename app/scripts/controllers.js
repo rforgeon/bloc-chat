@@ -7,7 +7,7 @@ var roomId = 2;
 
       var ref = firebase.database().ref();
       var fireRooms = $firebaseArray(ref.child("rooms"));
-      var fireInFavor = $firebaseArray(ref.child("inFavorOf"));
+      var fireUsers = $firebaseArray(ref.child("userData"));
       var fireMsgs = $firebaseArray(ref.child("msgs"));
 
       this.roomArray = fireRooms;
@@ -15,11 +15,13 @@ var roomId = 2;
       //   { "emoji": '🇺🇸',
       //     "nameA": 'Hillary',
       //     "nameB": 'Trump',
+      //     "uid": "aoijhi24",
       //     "roomId": 0,
       //   },
       //   { "emoji": '⚽️',
       //     "nameA": 'Arsenal',
       //     "nameB": 'Chelsea',
+      //     "uid": "aoijhi24",
       //     "roomId": 1
       //   }
       // ];
@@ -30,6 +32,7 @@ var roomId = 2;
       //     "userName": "Ralph",
       //     "content": "How's everybody doing in Room 1?",
       //     "createdAt": new Date(),
+      //     "uid": "aoijhi24",
       //     "roomId": 0
       //   },
       //   {
@@ -37,17 +40,21 @@ var roomId = 2;
       //     "inFavorOf": "",
       //     "content": "Anyone here?",
       //     "createdAt": new Date(),
+      //     "uid": "aoijhi24",
       //     "roomId": 1
       //   }
       // ];
 
-
-        function testUserService(){
-        
-        }
-
-
-
+      this.fireUsersArray = fireUsers;
+    // [
+      // {
+      //   "uid": aski8eefekh,
+      //      {"roomId":
+      //            1:,
+      //              {"preference": "A"}
+      //      }
+      // },
+    // ]
 
         //Set the current Chat Room
         this.currentRoom = null;
@@ -100,6 +107,8 @@ var roomId = 2;
         }
 
         function createRoom(newRoom){
+          var user = UserService;
+
           // this.messagesArray.$add({
           //       content: "Room Created 🙌",
           //       createdAt: new Date(),
@@ -107,6 +116,7 @@ var roomId = 2;
           //     });
 
           newRoom.roomId = roomId;
+          newRoom.uid = user.uid;
 
           this.roomArray.$add(newRoom);
 
@@ -117,70 +127,97 @@ var roomId = 2;
 
         function createMsg(newMsg){
           if (userSignedIn()){
-            var user = firebase.auth().currentUser;
+            var user = UserService;
             var date = new Date();
             date = date.toLocaleTimeString();
 
-            newMsg.userName = user.displayName.toLowerCase();
+            newMsg.userName = user.userName.toLowerCase();
             newMsg.createdAt = date;
             newMsg.roomId = this.currentRoom.roomId;
-
-            console.log(newMsg.createdAt);
-
+            newMsg.uid = user.uid;
+            console.log("MsgArray: ",this.messagesArray);
             this.messagesArray.$add(newMsg);
 
             setRoomMsgs(this.currentRoom);
 
-            resetCreateMsgForm();
           }else{
             alert("You must sign in to contribute to a room.");
           }
         }
 
-        function removeOldInFavor(roomID,targetUser){
-          //check if user has a preference for the current room. If they do, remove it.
-          if(this.inFavorOfArray !==undefined || this.inFavorOfArray !==null){
-            for (var i in this.inFavorOfArray){
-              if (this.inFavorOfArray[i].inFavorUser === targetUser && this.inFavorOfArray[i].roomId === roomID){
-                this.$remove(this.inFavorOfArray[i]);
-              }
-            }
-          }else{
-              console.log("removeOld skipped");
+        function setCurrentUserData(){
+          var currentUser = UserService.uid;
+          console.log("currentUser: "+currentUser);
+          for (var i in this.fireUsersArray){
+            if (this.fireUsersArray[i].uid === currentUser){
               return;
             }
+          }
+          //if user does not exist, create new user
+          var newUser = {"uid": 1};
+          // newUser.uid = currentUser;
+          console.log("newUser: "+newUser.uid);
+          console.log("userArray: ",this.fireUsersArray);
+          this.fireUsersArray.$add(newUser);
+        }
+
+        function getCurrentUserData(){
+          var currentUser = UserService.uid;
+          console.log("currentUser: "+currentUser);
+          for (var i in this.fireUsersArray){
+            if (this.fireUsersArray[i].uid === currentUser){
+              return this.fireUsersArray[i];
+            }
+          }
+        }
+
+        function removeOldInFavor(roomID){
+          var currentUser = UserService.uid;
+          console.log("currentUser: "+currentUser);
+          //check if current user has a preference
+          for (var i in this.fireUsersArray){
+            if (this.fireUsersArray[i].uid === currentUser){
+              //clear preference
+              this.fireUsersArray[i].roomId[roomID].preference = '';
+            }
+          }
+          //if user does not exist, create new user
+          var newUser = {"uid": currentUser};
+          console.log("newUser: "+newUser.uid);
+          console.log("userArray: ",this.fireUsersArray);
+
+          this.fireUsersArray.$add(newUser);
         }
 
         function setInFavor(choice){
-          console.log(choice);
-          var thisUser = firebase.auth().currentUser;
           var currentRoomID = this.currentRoom.roomId;
-          console.log(thisUser);
-          console.log(currentRoomID);
+          var noPreferenceForRoom = true;
 
-          removeOldInFavor(currentRoomID,thisUser);
-          console.log("removeOld ran");
-          newInFavor.inFavorUser = thisUser;
-          newInFavor.roomId = currentRoomID;
-          newInFavor.inFavorOf = choice;
+          var currentUser = UserService.uid;
+          //check if current user has a preference for this room
+          for (var i in this.fireUsersArray){
+            if (this.fireUsersArray[i].uid === currentUser && this.fireUsersArray[i].roomId === currentRoomID){
+              console.log("if ran "+this.fireUsersArray[i].preference);  
+              this.fireUsersArray[i].preference = choice;
+              noPreferenceForRoom = false;
+            }
+          }
+          if (noPreferenceForRoom){
+            //if user does not exist, create new user
+            var newPreference = {"uid": currentUser};
+            newPreference.roomId = currentRoomID;
+            newPreference.preference = choice;
 
-          this.inFavorOfArray.$add(newInFavor);
+            this.fireUsersArray.$add(newPreference);
+          }
         }
 
         function hasInFavor(){
-          console.log("hasInFavor ran");
-          var user = firebase.auth().currentUser;
-          for (var i in this.inFavorOfNameA){
-            if (i === user){
-              return this.nameA;
-            }
+          var currentRoomID = this.currentRoom.roomId;
+          var user = getCurrentUserData();
+          if (user.uid.roomId[currentRoomID].preference !==''){
+            return true;
           }
-          for (var j in this.inFavorOfNameB){
-            if (j === user){
-              return this.nameB;
-            }
-          }
-          return false;
         }
 
         function logout(){
@@ -192,7 +229,6 @@ var roomId = 2;
         }
 
         function showLogin(){
-          console.log("login ran");
             var ui = new firebaseui.auth.AuthUI(firebase.auth());
             // The start method will wait until the DOM is loaded.
             ui.start("#firebaseui-auth-container",uiConfig);
@@ -206,6 +242,8 @@ var roomId = 2;
             }
         }
 
+        this.setCurrentUserData = setCurrentUserData;
+        this.getCurrentUserData = getCurrentUserData;
         this.hasInFavor = hasInFavor;
         this.setInFavor = setInFavor;
         this.removeOldInFavor = removeOldInFavor;
@@ -215,8 +253,6 @@ var roomId = 2;
         this.setRoomMsgs = setRoomMsgs;
         this.logout = logout;
         this.showLogin = showLogin;
-
-        this.testUserService = testUserService;
 
       }
 

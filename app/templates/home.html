@@ -1,15 +1,15 @@
 
 <div class="grid">
   <div class="col-1-4 sidbarBackgrnd sideBoarder">
+    <!-- <div ng-init=Rooms.setCurrentUserData() ></div> -->
     <br>
     <div class="sidebarTitle">
       Debatable
     </div>
-    <div ng-init="Rooms.testUserService()"></div>
     <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo" ng-click="Rooms.setCurrentRoom(null)">
     <br>
     <div ng-init="Rooms.showLogin()"></div>
-    <div id="firebaseui-auth-container"></div>
+    <div id="firebaseui-auth-container" ></div>
     <button ng-click="Rooms.logout()" class="btn btn-default" >Sign Out</button>
     <br>
     <br>
@@ -45,11 +45,11 @@
       <div ng-if="Rooms.currentRoom!=null">
         <div class="header">
           <div class="headerTitle">
-            <div class="leftHeaderRectangle" ng-click="Rooms.setInFavor('A')">
+            <div class="leftHeaderRectangle" ng-click="Rooms.setInFavor('A')" >
               <h3 class="leftHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameA}}</span> </h3>
             </div>
 
-            <div class="rightHeaderRectangle" ng-click="Rooms.setInFavorB(newInFavor)">
+            <div class="rightHeaderRectangle" ng-click="Rooms.setInFavor('B')">
               <h3 class="rightHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameB}} </span></h3>
             </div>
           </div>

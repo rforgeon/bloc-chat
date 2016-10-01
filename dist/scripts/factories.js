@@ -31,84 +31,79 @@
 
 
 
-  initApp = function() {
-       firebase.auth().onAuthStateChanged(function(user) {
-         if (user) {
-           // User is signed in.
-           var displayName = user.displayName;
-           var email = user.email;
-           var emailVerified = user.emailVerified;
-           var photoURL = user.photoURL;
-           var uid = user.uid;
-           var providerData = user.providerData;
-           user.getToken().then(function(accessToken) {
-             document.getElementById('sign-in-status').textContent = 'Signed in';
-             document.getElementById('sign-in').textContent = 'Sign out';
-             document.getElementById('account-details').textContent = JSON.stringify({
-               displayName: displayName,
-               email: email,
-               emailVerified: emailVerified,
-               photoURL: photoURL,
-               uid: uid,
-               accessToken: accessToken,
-               providerData: providerData
-             }, null, '  ');
-           });
-         } else {
-           // User is signed out.
-           document.getElementById('sign-in-status').textContent = 'Signed out';
-           document.getElementById('sign-in').textContent = 'Sign in';
-           document.getElementById('account-details').textContent = 'null';
-         }
-       }, function(error) {
-         console.log(error);
-       });
-     };
+  // initApp = function() {
+  //      firebase.auth().onAuthStateChanged(function(user) {
+  //        if (user) {
+  //          // User is signed in.
+  //          var displayName = user.displayName;
+  //          var email = user.email;
+  //          var emailVerified = user.emailVerified;
+  //          var photoURL = user.photoURL;
+  //          var uid = user.uid;
+  //          var providerData = user.providerData;
+  //          user.getToken().then(function(accessToken) {
+  //            document.getElementById('sign-in-status').textContent = 'Signed in';
+  //            document.getElementById('sign-in').textContent = 'Sign out';
+  //            document.getElementById('account-details').textContent = JSON.stringify({
+  //              displayName: displayName,
+  //              email: email,
+  //              emailVerified: emailVerified,
+  //              photoURL: photoURL,
+  //              uid: uid,
+  //              accessToken: accessToken,
+  //              providerData: providerData
+  //            }, null, '  ');
+  //          });
+  //        } else {
+  //          // User is signed out.
+  //          document.getElementById('sign-in-status').textContent = 'Signed out';
+  //          document.getElementById('sign-in').textContent = 'Sign in';
+  //          document.getElementById('account-details').textContent = 'null';
+  //        }
+  //      }, function(error) {
+  //        console.log(error);
+  //      });
+  //    };
 
 
      (function() {
          function UserService($firebaseAuth) {
-           this.myName = "test";
+           var UserObj = {
+             userName: '',
+             email: '',
+             emailVerified: false,
+             photoURL: '',
+             uid: '',
+             providerId:'',
+           };
 
-           var authService = $firebaseAuth();
-           var myUser = authService.currentUser;
-           console.log("currentUser on service: ",myUser);
+             firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                  UserObj.userName = firebase.auth().currentUser.displayName;
+                  UserObj.email = firebase.auth().currentUser.email;
+                  UserObj.emailVerified = firebase.auth().currentUser.emailVerified;
+                  UserObj.photoURL = firebase.auth().currentUser.photoURL;
+                  UserObj.uid = firebase.auth().currentUser.uid;
+                  UserObj.providerId = firebase.auth().currentUser.providerData[0].providerId;
 
-
-
-
-          //  function userName(){
-          //    firebase.auth().onAuthStateChanged(function(user) {
-          //       if (user) {
-          //         console.log('UserService user:'+user.displayName);
-          //         UserService.userName = firebase.auth().currentUser.displayName;
-          //         console.log("inside currentUser: "+UserService.userName);
-          //         return UserService.userName;
-          //       } else {
-          //         console.log("UserService doesn't think there is a user");
-          //       }
-          //    });
-          //  }
-
-             this.myName = userName();
-             console.log("Outside ThisUserName: "+this.myName);
+                  user.getToken().then(function(accessToken) {
+                    document.getElementById('sign-in-status').textContent = 'Signed in';
+                    document.getElementById('sign-in').textContent = 'Sign out';
+                  });
 
 
-             // this.displayName = user.displayName;
-             // var email = user.email;
-             // var emailVerified = user.emailVerified;
-             // var photoURL = user.photoURL;
-             // var uid = user.uid;
-             // var providerData = user.providerData;
-             //
-             //
-             //
-             // console.log('in UserService email: '+email);
-             // console.log('in UserService desplayName: '+this.displayName);
+                  return UserObj;
+                } else {
+                  // User is signed out.
+                  document.getElementById('sign-in-status').textContent = 'Signed out';
+                  document.getElementById('sign-in').textContent = 'Sign in';
+                }
+              }, function(error) {
+                console.log(error);
+              });
 
-             return{
-               data: this.myName
-             };
+
+             return UserObj;
          }
 
        angular
@@ -117,6 +112,6 @@
 
    })();
 
-     window.addEventListener('load', function() {
-       initApp();
-     });
+    //  window.addEventListener('load', function() {
+    //    initApp();
+    //  });
