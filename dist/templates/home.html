@@ -45,18 +45,18 @@
       <div ng-if="Rooms.currentRoom!=null">
         <div class="header">
           <div class="headerTitle">
-            <div class="leftHeaderRectangle" ng-click="Rooms.setInFavor('A')" >
+            <div class="leftHeaderRectangle" ng-click="Rooms.setPreference('A')" ng-class="{'innerShadow':Rooms.setSelected('A')}" >
               <h3 class="leftHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameA}}</span> </h3>
             </div>
 
-            <div class="rightHeaderRectangle" ng-click="Rooms.setInFavor('B')">
+            <div class="rightHeaderRectangle " ng-click="Rooms.setPreference('B')" ng-class="{'innerShadow':Rooms.setSelected('B')}">
               <h3 class="rightHeaderText "> <span style="opacity:1">{{Rooms.currentRoom.nameB}} </span></h3>
             </div>
           </div>
         </div>
         <br>
         <!-- Popup -->
-        <!-- <div ng-if="Rooms.hasInFavor()===false && Rooms.popupOpen" class=selectOverlay>
+        <div ng-if="Rooms.hasNoPreference() && Rooms.popupOpen" class=selectOverlay>
           <div class="selectOverlayHand">
             👆
           </div>
@@ -64,15 +64,15 @@
             Select your side.
           </div>
           <button class="selectOverlayBtn btn btn-default" ng-click="Rooms.popupOpen=false;"  >Just looking 👀</button>
-        </div> -->
+        </div>
         <div class=messageStage>
-          <div class="msgBoxBlue" ng-repeat="message in Rooms.setRoomMsgs(Rooms.currentRoom)">
-            <div class=msgNameAndText>
+          <div ng-repeat="message in Rooms.setRoomMsgs(Rooms.currentRoom)">
+            <div ng-class="{{message.preference == 'A'}} ? 'msgBoxOrange':'msgBoxBlue'">
               <p class="msgUsername">{{message.userName}}</p>
               <p class="msgText">{{message.content}}</p>
-            </div>
-            <div class=msgTime>
-              <p>{{message.createdAt}}</p>
+              <div>
+                <p class="msgTime">{{message.createdAt}}</p>
+              </div>
             </div>
           </div>
         </div>

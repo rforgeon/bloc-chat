@@ -111,7 +111,3 @@
            .factory('UserService', ["$firebaseAuth",UserService]);
 
    })();
-
-    //  window.addEventListener('load', function() {
-    //    initApp();
-    //  });
