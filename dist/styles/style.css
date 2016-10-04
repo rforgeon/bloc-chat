@@ -188,7 +188,7 @@
   margin-bottom: 5px;
   border-radius: 4px;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
-  display: flex;
+  display: block;
   padding: none;
 }
 
@@ -202,7 +202,7 @@
   margin-bottom: 5px;
   border-radius: 4px;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.10);
-  display: flex;
+  display: block;
 }
 
 .msgTime{
@@ -211,10 +211,11 @@
   color: #565656;
   letter-spacing: -0.47px;
   padding-right: 15px;
-  padding-top: 2px;
   width: 8.5vw;
-  margin: none;
+  margin-top: 5px;
   text-align: right;
+  float: right;
+  display: inline-block;
 }
 
 .msgNameAndText{
@@ -229,6 +230,7 @@
   letter-spacing: -0.66px;
   padding-left: 5px;
   margin: none;
+  display: inline-block;
 }
 .msgText{
   font-family: AvenirNext-Regular;
@@ -237,6 +239,7 @@
   letter-spacing: -0.66px;
   opacity: 1;
   padding-left: 10px;
+  display: inline-block;
 }
 
 .txtBoxRectangle{
