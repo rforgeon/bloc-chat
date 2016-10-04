@@ -1,7 +1,7 @@
 
 
 (function() {
-    function RoomsCtrl($firebaseArray, $firebaseObject, UserService) {
+    function RoomsCtrl($firebaseArray, $firebaseObject, UserService, $location, $anchorScroll) {
 
       var ref = firebase.database().ref();
       var fireRooms = $firebaseArray(ref.child("rooms"));
@@ -58,6 +58,7 @@
           this.currentRoom = roomName;
           this.isCreating = false;
           this.popupOpen = true;
+      
         }
 
         this.setCurrentRoom = setCurrentRoom;
@@ -147,6 +148,12 @@
             this.messagesArray.$add(newMsg);
 
             setRoomMsgs(this.currentRoom);
+
+            // send scroll to bottom of messages
+            $location.hash('/');
+
+            // call $anchorScroll()
+            $anchorScroll();
 
           }else{
             alert("You must sign in to contribute to a room.");
@@ -281,5 +288,5 @@
 
     angular
         .module('BlocChat')
-        .controller('RoomsCtrl', ["$firebaseArray","$firebaseObject","UserService",RoomsCtrl]);
+        .controller('RoomsCtrl', ["$firebaseArray","$firebaseObject","UserService","$location", "$anchorScroll",RoomsCtrl]);
 })();
