@@ -8,9 +8,16 @@
     </div>
     <img src="https://cldup.com/KCJED6cOZ2.png" type="button" class="logo" ng-click="Rooms.setCurrentRoom(null)">
     <br>
-    <div ng-init="Rooms.showLogin()"></div>
-    <div id="firebaseui-auth-container" ></div>
-    <button ng-click="Rooms.logout()" class="btn btn-default" >Sign Out</button>
+    <!-- Refresh page -->
+    <div ng-init="Rooms.reloadPage()"></div>
+    <!-- Use Firebase auth -->
+    <div ng-if="Rooms.userSignedIn() === false">
+      <div ng-init="Rooms.showLogin()"></div>
+      <div id="firebaseui-auth-container" ></div>
+    </div>
+    <div ng-if="Rooms.userSignedIn() === true">
+      <button ng-click="Rooms.logout()" ng-click="Rooms.reloadPage()" class="btn btn-default signOut" >Sign Out</button>
+    </div>
     <br>
     <br>
     <img src="https://cldup.com/4iixJiPAVs.png" class="addRoom" ng-click="Rooms.startCreating()">
@@ -40,6 +47,22 @@
         </div>
         </form>
       </div>
+      <!-- Display Home   -->
+      <div ng-if="Rooms.currentRoom===null">
+        <br>
+        <h2>All Rooms</h2>
+        <div class="roomNameContainer">
+          <div class="roomButton roomButtonText" ng-repeat="room in Rooms.roomArray" >
+            <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.emoji }} {{ room.nameA }} <span style="color:black;">Vs.</span> {{ room.nameB }}</a>
+          </div>
+        </div>
+        <h2>Your Rooms</h2>
+        <div class="roomNameContainer">
+          <div class="roomButton roomButtonText" ng-repeat="room in Rooms.getUserRooms()" >
+            <a href="#" ng-click="Rooms.setCurrentRoom(room)">{{ room.emoji }} {{ room.nameA }} <span style="color:black;">Vs.</span> {{ room.nameB }}</a>
+          </div>
+        </div>
+
 
     <!-- Display Room -->
       <div ng-if="Rooms.currentRoom!=null">

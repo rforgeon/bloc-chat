@@ -58,7 +58,7 @@
           this.currentRoom = roomName;
           this.isCreating = false;
           this.popupOpen = true;
-      
+
         }
 
         this.setCurrentRoom = setCurrentRoom;
@@ -99,6 +99,34 @@
             }
           }
           return thisRoomsMsgs;
+        }
+
+        function getUserRooms(){
+          var currentUser = UserService.uid;
+          console.log(UserService.uid);
+          var userRooms = [];
+          var roomIds = [];
+          //find all messages from current user
+          for (var i in this.messagesArray){
+            if (this.messagesArray[i].user.uid === currentUser){
+                roomIds.push(this.messagesArray[i].roomId);
+            }
+          }
+          //create array of only the unique room ids
+          var uniqueIds = [];
+          $.each(rooomIds, function(i, el){
+            if($.inArray(el, uniqueIds) === -1) uniqueIds.push(el);
+          });
+          //check each room to see if it matches with any of the unique room ids
+          //if there is a match, add this room to the user's room array
+          for (var j in this.roomArray){
+            for (var n in uniqueIds){
+              if (this.roomArray[j].roomId === uniqueIds[n]){
+                userRooms.push(this.roomArray[j]);
+              }
+            }
+          }
+          return userRooms;
         }
 
         function createRoom(newRoom){
@@ -262,6 +290,8 @@
             // The start method will wait until the DOM is loaded.
             ui.start("#firebaseui-auth-container",uiConfig);
         }
+        function reloadPage(){
+        }
 
         function userSignedIn(){
             if (firebase.auth().currentUser !== null ) {
@@ -271,6 +301,8 @@
             }
         }
 
+        this.getUserRooms = getUserRooms;
+        this.reloadPage = reloadPage;
         this.getMsgPref = getMsgPref;
         this.setSelected = setSelected;
         this.setCurrentUserData = setCurrentUserData;

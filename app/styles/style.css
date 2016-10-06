@@ -58,6 +58,12 @@
   opacity: 1;
 }
 
+.signOut{
+  background-color: #5A7F9B;
+  color: white;
+  border-color: #5A7F9B;
+}
+
 .roomNameContainer{
   overflow: auto;
   height: 45vh;
