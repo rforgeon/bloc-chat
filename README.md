@@ -1,4 +1,4 @@
-[#Debatable](https://bloc-chat-8c9cf.firebaseapp.com/)
+#[Debatable](https://bloc-chat-8c9cf.firebaseapp.com/)
 
 ##What
 Debatable is a chatroom app that allows the room creator to select a debatable topic and present the two sides of the topic. (ex: "🐱Cats make the best pets" Vs. "🐶Dogs make the best pets").
